@@ -1,14 +1,39 @@
-const API_URL = "https://vince3-backend.onrender.com/chat"; // Replace with actual Render backend URL
+document.addEventListener("DOMContentLoaded", function () {
+    const inputField = document.getElementById("messageInput");
+    const responseDiv = document.getElementById("response");
 
-async function sendMessage() {
-    const userMessage = document.getElementById("messageInput").value;
+    document.getElementById("sendButton").addEventListener("click", async function () {
+        const userMessage = inputField.value.trim();
+        if (!userMessage) {
+            responseDiv.innerHTML = "Bruh, type something first.";
+            return;
+        }
 
-    const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage })
+        // Display user message
+        responseDiv.innerHTML = `<strong>You:</strong> ${userMessage}`;
+
+        try {
+            const res = await fetch("https://vince3-0.onrender.com/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            const data = await res.json();
+            responseDiv.innerHTML += `<br><strong>Vince 3.0:</strong> ${data.response || "Error: No response from server."}`;
+        } catch (error) {
+            responseDiv.innerHTML += "<br>Error: Something went wrong.";
+            console.error("Fetch error:", error);
+        }
+
+        inputField.value = ""; // Clear input
     });
 
-    const data = await response.json();
-    document.getElementById("response").innerText = data.response;
-}
+    // Allow Enter key to send message
+    inputField.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            document.getElementById("sendButton").click();
+        }
+    });
+});
