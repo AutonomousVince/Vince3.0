@@ -3,62 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vince 3.0 - AI Chat</title>
+    <title>Big Bro</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:ital,wght@1,700&display=swap">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
+            background-image: url('Big bro bedroom upScaled.PNG');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Cinzel', serif;
+            font-style: italic;
+            color: white;
             text-align: center;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
         }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
+
+        .header-text {
+            font-size: 60px;
+            font-style: italic;
+            color: white;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
+            position: absolute;
+            top: 5%;
+            text-align: center;
         }
+
         .chat-container {
-            max-width: 600px;
-            margin: auto;
-            padding: 15px;
-            border-radius: 10px;
-            background-color: #222;
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
-        input {
-            width: 80%;
+
+        input[type="text"] {
+            width: 300px;
             padding: 10px;
-            border: none;
+            font-size: 18px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            outline: none;
             border-radius: 5px;
-            font-size: 16px;
-            margin-bottom: 10px;
+            text-align: center;
+            font-style: italic;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
         }
+
         button {
-            padding: 10px 15px;
-            background-color: #ff5733;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: red;
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
+            transition: 0.3s;
+            font-style: italic;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
         }
+
         button:hover {
-            background-color: #e04e2c;
+            background-color: darkred;
         }
+
         #response {
-            margin-top: 15px;
-            font-size: 18px;
+            margin-top: 20px;
+            font-size: 22px;
+            font-style: italic;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Hide audio controls */
+        audio {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <h1>Vince 3.0 - AI Chat</h1>
+    <!-- Audio Element for Background Sound -->
+    <audio id="backgroundAudio" autoplay loop>
+        <source src="moonvampire - cigarette burns.weba" type="audio/webm">
+        Your browser does not support the audio element.
+    </audio>
+
+    <h1 class="header-text">Big Bro</h1>
+    
     <div class="chat-container">
-        <input type="text" id="messageInput" placeholder="Ask Vince something...">
-        <button id="sendButton">Send</button>
+        <input type="text" id="messageInput" placeholder="Ask Big Bro something...">
+        <button onclick="sendMessage()">Send</button>
         <div id="response"></div>
     </div>
 
-    <script src="vince.js"></script>
+    <script>
+        // Ensure audio plays on user interaction if blocked by browser
+        document.addEventListener("click", function() {
+            let audio = document.getElementById("backgroundAudio");
+            if (audio.paused) {
+                audio.play();
+            }
+        });
+
+        function sendMessage() {
+            let input = document.getElementById("messageInput").value;
+            let responseDiv = document.getElementById("response");
+            responseDiv.innerHTML = "Big Bro is thinking...";
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: input })
+            })
+            .then(response => response.json())
+            .then(data => { responseDiv.innerHTML = data.response; })
+            .catch(error => { responseDiv.innerHTML = "Something went wrong."; });
+        }
+    </script>
 </body>
 </html>
