@@ -4,33 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Big Bro</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:ital,wght@1,700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:ital@1&display=swap">
     <style>
-        body {
-            background-image: url('Big%20bro%20bedroom%20upScaled.PNG'); /* Ensure filename matches */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            font-family: 'Cinzel', serif;
-            font-style: italic;
-            color: white;
-            text-align: center;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cinzel', serif;
+        }
+
+        body {
+            background: url('big-bro-bedroom-upscaled.png') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            height: 100vh;
+            align-items: center;
         }
 
         .header-text {
-            font-size: 80px;
+            font-size: 60px;
             font-style: italic;
+            font-weight: bold;
             color: red;
             text-shadow: 4px 4px 8px black;
             position: absolute;
-            top: 2%;
+            top: 10%;
             text-align: center;
         }
 
@@ -39,64 +41,42 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 100%;
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
         }
 
         input[type="text"] {
-            width: 400px;
-            padding: 15px;
-            font-size: 20px;
-            border: 2px solid white;
-            background: rgba(0, 0, 0, 0.5);
+            width: 300px;
+            padding: 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            outline: none;
-            border-radius: 10px;
             text-align: center;
-            font-style: italic;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+            margin-bottom: 10px;
         }
 
         button {
-            margin-top: 10px;
-            padding: 12px 25px;
-            font-size: 20px;
+            padding: 10px 20px;
             background-color: red;
-            color: white;
             border: none;
-            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
             cursor: pointer;
-            transition: 0.3s;
-            font-style: italic;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
         }
 
         button:hover {
             background-color: darkred;
         }
 
-        #response {
-            margin-top: 20px;
-            font-size: 24px;
-            font-style: italic;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-        }
-
-        /* Hide audio controls */
         audio {
             display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Audio Element for Background Sound -->
-    <audio id="backgroundAudio" autoplay loop>
-        <source src="moonvampire%20-%20cigarette%20burns.weba" type="audio/webm">
-        Your browser does not support the audio element.
-    </audio>
-
     <h1 class="header-text">Big Bro</h1>
     
     <div class="chat-container">
@@ -105,27 +85,24 @@
         <div id="response"></div>
     </div>
 
-    <script>
-        // Ensure audio plays on user interaction if blocked by browser
-        document.addEventListener("click", function() {
-            let audio = document.getElementById("backgroundAudio");
-            if (audio.paused) {
-                audio.play();
-            }
-        });
+    <audio autoplay loop>
+        <source src="moonvampire-cigarette-burns.weba" type="audio/webm">
+        Your browser does not support the audio element.
+    </audio>
 
+    <script>
         function sendMessage() {
-            let input = document.getElementById("messageInput").value;
-            let responseDiv = document.getElementById("response");
-            responseDiv.innerHTML = "Big Bro is thinking...";
-            fetch("/chat", {
+            const message = document.getElementById("messageInput").value;
+            fetch("https://vince3-0.onrender.com/chat", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: input })
+                body: JSON.stringify({ message })
             })
             .then(response => response.json())
-            .then(data => { responseDiv.innerHTML = data.response; })
-            .catch(error => { responseDiv.innerHTML = "Something went wrong."; });
+            .then(data => {
+                document.getElementById("response").innerText = data.response;
+            })
+            .catch(error => console.error("Error:", error));
         }
     </script>
 </body>
