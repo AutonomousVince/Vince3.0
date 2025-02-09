@@ -6,7 +6,7 @@
     "node-fetch": "^3.3.2",
     "openai": "^4.83.0"
   },
-  "name": "vince-3.0",
+  "name": "Big-bro",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
